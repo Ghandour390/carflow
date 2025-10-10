@@ -1,0 +1,72 @@
+# Dependencies
+node_modules/
+CareFlow back_end/node_modules/
+Careflow frent_end/node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.development
+CareFlow back_end/.env
+Careflow frent_end/.env
+Careflow frent_end/.env.local
+Careflow frent_end/.env.production
+Careflow frent_end/.env.development
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+CareFlow back_end/*.log
+Careflow frent_end/*.log
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+CareFlow back_end/dist/
+CareFlow back_end/build/
+Careflow frent_end/dist/
+Careflow frent_end/build/
+Careflow frent_end/.next/
+Careflow frent_end/out/
+
+# Cache directories
+.cache/
+.parcel-cache/
+.vite/
+CareFlow back_end/.cache/
+Careflow frent_end/.cache/
+Careflow frent_end/.parcel-cache/
+Careflow frent_end/.vite/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+CareFlow back_end/package-lock.json
+CareFlow back_end/yarn.lock
+Careflow frent_end/package-lock.json
+Careflow frent_end/yarn.lock
