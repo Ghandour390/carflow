@@ -54,6 +54,17 @@ class RoleController{
             console.log(err);
             res.status(500).json({ msg: "Something went wrong" });
         }
+    };
+    async getRoleById(req,res){
+        try{
+            const id = req.body.id;
+            const role = await Role.findById({id});
+            res.status(200).json({msg:"access",role:role})
+
+        }catch(err){
+            console.log(err)
+            res.status(500).json({msg:"error server"})
+        }
     }
 }
 

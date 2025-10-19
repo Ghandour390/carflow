@@ -1,29 +1,22 @@
 const mongoose = require("mongoose");
 
-
-
-
-// app.use(express.urlencoded({ extended: true }));
-
-// mongodb://user:password@localhost:27017/mydatabase?authSource=admin
-
 async function connectToMongoDB() {
-    try {
-        await mongoose.connect('mongodb://localhost:27017/careflow', {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        console.log('Connected to MongoDB avec seccess');
-        
-    } catch (error) {
-        console.error('Error connecting to MongoDB:', error);
-    }
+  try {
+    const mongoURI =  'mongodb://localhost:27017/careflow';
+    //  process.env.MONGO_URL ||
+
+    await mongoose.connect(mongoURI);
+
+    console.log('✅ Connected to MongoDB successfully');
+  } catch (error) {
+    console.error('❌ Error connecting to MongoDB:', error.message);
+    process.exit(1); // Quitte le serveur si la connexion échoue
+  }
+
+  // Optionnel : pour afficher un message en cas de déconnexion
+  mongoose.connection.on('disconnected', () => {
+    console.warn('⚠️ MongoDB disconnected');
+  });
 }
-// const mongooseUrl ='mongodb://localhost:27017/careflow';
-// const connexiondb=mongoose.connect(mongooseUrl || process.env.MONGO_URL)
-//     .then(() => console.log('Connected to MongoDB avec success'))
-//     .catch(err => console.error('Error connecting to MongoDB:', err));
 
-
-
-    module.exports = connectToMongoDB;
+module.exports = connectToMongoDB;

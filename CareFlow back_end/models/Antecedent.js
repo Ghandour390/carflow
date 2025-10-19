@@ -10,7 +10,7 @@ const antecedentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    dossierId: {
+    dossierMedicalId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'DossierMedical',
         required: true

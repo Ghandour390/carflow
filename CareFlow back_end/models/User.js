@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    firstname: {
+    prenom: {
         type: String,
         required: true
     },
-    lastname: {
+    nom: {
         type: String,
         required: true
     },
@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
         enum: ['homme', 'femme'],
         required: true
     },
-    cin: {
+    CIN: {
         type: String,
         required: true,
         unique: true
@@ -24,34 +24,36 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    password: {
+    motDePasse: {
         type: String,
         required: true
     },
-    birthday: {
+    dateNaissance: {
         type: Date,
         required: true
     },
-    address: {
+    adresse: {
         type: String,
         required: true
     },
     roleId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Role',
-        required: true
+        required: false
     },
     specialiteId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Specialite'
+        ref: 'Specialite',
+        required: false
     },
-    isActive: {
+    estActif: {
         type: Boolean,
-        default: false
+        default: true
     },
     parentId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: false
     }
 });
 

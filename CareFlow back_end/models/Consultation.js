@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const consultationSchema = new mongoose.Schema({
+    medcinId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     dateConsultation: {
         type: Date,
         default: Date.now
@@ -15,7 +20,7 @@ const consultationSchema = new mongoose.Schema({
     diagnostic: {
         type: String
     },
-    dossierId: {
+    dossierMedicalId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'DossierMedical',
         required: true

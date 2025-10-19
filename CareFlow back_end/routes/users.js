@@ -9,8 +9,6 @@ const verifyToken = require('../medlwers/verifyToken');
 
     router.post('/register', AuthController.register);
     router.post('/login', AuthController.login);
-    // route.get('/api/user', AuthController.getUser);
-    // route.get('/logout', AuthController.logout);
 
     router.get('/user',verifyToken, UserController.getUser);
     router.put('/user/:id', UserController.updateUser);

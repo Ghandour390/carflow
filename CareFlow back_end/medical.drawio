@@ -1,43 +1,43 @@
 <mxfile host="65bd71144e">
     <diagram id="dossier_medical_v2" name="Dossier Medical UML">
-        <mxGraphModel dx="1241" dy="497" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+        <mxGraphModel dx="1081" dy="486" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="user" value="User" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" parent="1" vertex="1">
+                <mxCell id="user" value="Utilisateur" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" parent="1" vertex="1">
                     <mxGeometry x="640" y="40" width="200" height="310" as="geometry"/>
                 </mxCell>
-                <mxCell id="user-attr" value="_id: ObjectId&#xa;firstname: String&#xa;lastname: String&#xa;gender: Enum&#xa;cin: String&#xa;email: String&#xa;password: String&#xa;birthday: Date&#xa;address: String&#xa;roleId: ObjectId&#xa;specialite_id : int&#xa;isAtive:boolen&#xa;parent_id : int (nullable)&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="user" vertex="1">
+                <mxCell id="user-attr" value="_id: ObjectId&#xa;prenom: String&#xa;nom: String&#xa;sexe: Enum&#xa;cin: String&#xa;email: String&#xa;motDePasse: String&#xa;dateNaissance: Date&#xa;adresse: String&#xa;roleId: ObjectId&#xa;specialiteId: ObjectId&#xa;estActif: Boolean&#xa;parentId: ObjectId (nullable)&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="user" vertex="1">
                     <mxGeometry y="30" width="200" height="220" as="geometry"/>
                 </mxCell>
                 <mxCell id="user-line" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="user" vertex="1">
                     <mxGeometry y="250" width="200" height="8" as="geometry"/>
                 </mxCell>
-                <mxCell id="user-methods" value="+ login(): Token&#xa;+ register(): User&#xa;+ logout(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="user" vertex="1">
+                <mxCell id="user-methods" value="+ connexion(): Token&#xa;+ inscription(): Utilisateur&#xa;+ deconnexion(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="user" vertex="1">
                     <mxGeometry y="258" width="200" height="52" as="geometry"/>
                 </mxCell>
                 <mxCell id="role" value="Role" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;" parent="1" vertex="1">
                     <mxGeometry x="960" y="80" width="180" height="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="role-attr" value="_id: ObjectId&#xa;name: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="role" vertex="1">
+                <mxCell id="role-attr" value="_id: ObjectId&#xa;nom: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="role" vertex="1">
                     <mxGeometry y="30" width="180" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="specialite" value="Specialite" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;" parent="1" vertex="1">
-                    <mxGeometry x="960" y="220" width="180" height="90" as="geometry"/>
+                    <mxGeometry x="910" y="270" width="180" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="specialite-attr" value="_id: ObjectId&#xa;type: Enum" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="specialite" vertex="1">
                     <mxGeometry y="30" width="180" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="reservation" value="Reservation" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;" parent="1" vertex="1">
-                    <mxGeometry x="360" y="80" width="200" height="150" as="geometry"/>
+                <mxCell id="reservation" value="RendezVous" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;" parent="1" vertex="1">
+                    <mxGeometry x="150" y="90" width="200" height="150" as="geometry"/>
                 </mxCell>
-                <mxCell id="reservation-attr" value="_id: ObjectId&#xa;userId: ObjectId&#xa;startAt: Date&#xa;endAt: Date&#xa;status: Enum&#xa;note: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="reservation" vertex="1">
+                <mxCell id="appointment-attr" value="_id: ObjectId&#xa;patientId: ObjectId&#xa;medecinId: ObjectId&#xa;date: Date&#xa;heureDebut: Time&#xa;heureFin: Time&#xa;statut: Enum" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="reservation" vertex="1">
                     <mxGeometry y="30" width="200" height="120" as="geometry"/>
                 </mxCell>
                 <mxCell id="dossier" value="DossierMedical" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" parent="1" vertex="1">
                     <mxGeometry x="600" y="450" width="280" height="200" as="geometry"/>
                 </mxCell>
-                <mxCell id="dossier-attr" value="_id: ObjectId&#xa;dateCreation: Date&#xa;patientId: ObjectId&#xa;medecinId: ObjectId&#xa;etat: Enum" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="dossier" vertex="1">
+                <mxCell id="dossier-attr" value="_id: ObjectId&#xa;dateCreation: Date&#xa;patientId: ObjectId&#xa;etat: Enum" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="dossier" vertex="1">
                     <mxGeometry y="30" width="280" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="dossier-line" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="dossier" vertex="1">
@@ -49,7 +49,7 @@
                 <mxCell id="consultation" value="Consultation" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;" parent="1" vertex="1">
                     <mxGeometry x="1040" y="450" width="240" height="200" as="geometry"/>
                 </mxCell>
-                <mxCell id="consultation-attr" value="_id: ObjectId&#xa;dateConsultation: Date&#xa;motif: String&#xa;observation: String&#xa;diagnostic: String&#xa;dossierId: ObjectId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="consultation" vertex="1">
+                <mxCell id="consultation-attr" value="_id: ObjectId&#xa;medcinId:ObjectId&#xa;dateConsultation: Date&#xa;motif: String&#xa;observation: String&#xa;diagnostic: String&#xa;dossierMedicalId: ObjectId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="consultation" vertex="1">
                     <mxGeometry y="30" width="240" height="120" as="geometry"/>
                 </mxCell>
                 <mxCell id="consultation-line" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="consultation" vertex="1">
@@ -73,25 +73,25 @@
                 <mxCell id="analyse" value="Analyse" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;rounded=1;" parent="1" vertex="1">
                     <mxGeometry x="240" y="450" width="220" height="140" as="geometry"/>
                 </mxCell>
-                <mxCell id="analyse-attr" value="_id: ObjectId&#xa;typeAnalyse: String&#xa;dateAnalyse: Date&#xa;resultat: String&#xa;dossierId: ObjectId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="analyse" vertex="1">
+                <mxCell id="analyse-attr" value="_id: ObjectId&#xa;typeAnalyse: String&#xa;dateAnalyse: Date&#xa;resultat: String&#xa;dossierMedicalId: ObjectId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="analyse" vertex="1">
                     <mxGeometry y="30" width="220" height="110" as="geometry"/>
                 </mxCell>
                 <mxCell id="vaccination" value="Vaccination" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;rounded=1;" parent="1" vertex="1">
                     <mxGeometry x="240" y="650" width="220" height="140" as="geometry"/>
                 </mxCell>
-                <mxCell id="vaccination-attr" value="_id: ObjectId&#xa;nomVaccin: String&#xa;dateVaccination: Date&#xa;rappel: Date&#xa;dossierId: ObjectId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="vaccination" vertex="1">
+                <mxCell id="vaccination-attr" value="_id: ObjectId&#xa;nomVaccin: String&#xa;dateVaccination: Date&#xa;rappel: Date&#xa;dossierMedicalId: ObjectId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="vaccination" vertex="1">
                     <mxGeometry y="30" width="220" height="110" as="geometry"/>
                 </mxCell>
                 <mxCell id="antecedent" value="Antecedent" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;rounded=1;" parent="1" vertex="1">
                     <mxGeometry x="240" y="850" width="220" height="140" as="geometry"/>
                 </mxCell>
-                <mxCell id="antecedent-attr" value="_id: ObjectId&#xa;type: Enum&#xa;description: String&#xa;dossierId: ObjectId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="antecedent" vertex="1">
+                <mxCell id="antecedent-attr" value="_id: ObjectId&#xa;type: Enum&#xa;description: String&#xa;dossierMedicalId: ObjectId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="antecedent" vertex="1">
                     <mxGeometry y="30" width="220" height="110" as="geometry"/>
                 </mxCell>
                 <mxCell id="document" value="Document" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;rounded=1;" parent="1" vertex="1">
                     <mxGeometry x="600" y="730" width="280" height="140" as="geometry"/>
                 </mxCell>
-                <mxCell id="2" value="_id: ObjectId&#xa;typeDocument: String&#xa;cheminFichier: String&#xa;dateAjout: Date&#xa;dossierId: ObjectId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="document" vertex="1">
+                <mxCell id="2" value="_id: ObjectId&#xa;typeDocument: String&#xa;cheminFichier: String&#xa;dateAjout: Date&#xa;dossierMedicalId: ObjectId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="document" vertex="1">
                     <mxGeometry y="30" width="280" height="110" as="geometry"/>
                 </mxCell>
                 <mxCell id="rel1" value="" style="endArrow=diamondThin;endFill=1;endSize=20;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="dossier" target="user-methods" edge="1">
@@ -191,12 +191,9 @@
                     <mxGeometry width="160" relative="1" as="geometry">
                         <mxPoint x="860" y="250" as="sourcePoint"/>
                         <mxPoint x="1020" y="250" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="rel11" value="" style="endArrow=none;endFill=0;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="reservation-attr" target="user-attr" edge="1">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="580" y="150" as="sourcePoint"/>
-                        <mxPoint x="740" y="150" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="910" y="200"/>
+                        </Array>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="3" value="&#xa;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: nowrap; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;0..*&lt;/span&gt;&#xa;&#xa;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="1" vertex="1" connectable="0">
@@ -212,6 +209,54 @@
                 <mxCell id="5" value="1..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="1" vertex="1" connectable="0">
                     <mxGeometry x="444.24242424242425" y="671" as="geometry">
                         <mxPoint x="495" y="-543" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="availability" value="disponibilite" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;" parent="1" vertex="1">
+                    <mxGeometry x="160" y="270" width="200" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="availability-attr" value="_id: ObjectId&#xa;utilisateurId: ObjectId&#xa;jourSemaine: Enum&#xa;heureDebut: Time&#xa;heureFin: Time" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="availability" vertex="1">
+                    <mxGeometry y="30" width="200" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="notification" value="Notification" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;" parent="1" vertex="1">
+                    <mxGeometry x="1160" y="300" width="200" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="notification-attr" value="_id: ObjectId&#xa;utilisateurId: ObjectId&#xa;message: String&#xa;estLu: Boolean&#xa;dateCreation: Date" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="notification" vertex="1">
+                    <mxGeometry y="30" width="200" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="rel-availability" value="" style="endArrow=none;endFill=0;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="user-attr" target="availability-attr" edge="1">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="540" y="340" as="sourcePoint"/>
+                        <mxPoint x="700" y="340" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="rel-availability-label" value="1..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="rel-availability" connectable="0" vertex="1">
+                    <mxGeometry x="0.8" y="1" relative="1" as="geometry">
+                        <mxPoint x="10" y="-10" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="rel-appointment" value="" style="endArrow=none;endFill=0;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="user-attr" target="appointment-attr" edge="1">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="340" y="350" as="sourcePoint"/>
+                        <mxPoint x="500" y="350" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="rel-appointment-label" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="rel-appointment" connectable="0" vertex="1">
+                    <mxGeometry x="0.8" y="1" relative="1" as="geometry">
+                        <mxPoint x="10" y="-10" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="rel-notification" value="" style="endArrow=none;endFill=0;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="user-attr" target="notification-attr" edge="1">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="1140" y="345" as="sourcePoint"/>
+                        <mxPoint x="1300" y="345" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1160" y="190"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="rel-notification-label" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="rel-notification" connectable="0" vertex="1">
+                    <mxGeometry x="0.8" y="1" relative="1" as="geometry">
+                        <mxPoint x="-10" y="-10" as="offset"/>
                     </mxGeometry>
                 </mxCell>
             </root>

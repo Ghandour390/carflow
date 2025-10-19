@@ -12,7 +12,7 @@ const vaccinationSchema = new mongoose.Schema({
     rappel: {
         type: Date
     },
-    dossierId: {
+    dossierMedicalId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'DossierMedical',
         required: true

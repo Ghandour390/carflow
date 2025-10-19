@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const specialiteSchema = new mongoose.Schema({
     type: {
         type: String,
-        enum: ['cardiologue', 'dermatologue', 'pediatre', 'generaliste', 'autre'],
+        enum: ['cardiologie', 'dermatologie', 'pediatrie', 'neurologie', 'orthopédie', 'gynécologie', 'psychiatrie', 'ophtalmologie'],
         required: true
     }
 });

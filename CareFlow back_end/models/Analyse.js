@@ -12,7 +12,7 @@ const analyseSchema = new mongoose.Schema({
     resultat: {
         type: String
     },
-    dossierId: {
+    dossierMedicalId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'DossierMedical',
         required: true
