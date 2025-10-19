@@ -1,10 +1,10 @@
-const { param, body } = require('express-validator');
+const { body, param } = require('express-validator');
 
 const updateConsultationValidation = [
-    param('id').notEmpty().withMessage('L\'id de la consultation est requis'),
-    body('motif').optional().notEmpty().withMessage('Le motif ne peut pas être vide'),
-    body('observation').optional(),
-    body('diagnostic').optional()
+    param('id').notEmpty().withMessage('L\'ID de la consultation est requis').isMongoId().withMessage('L\'ID de la consultation est invalide'),
+    body('motif').optional().notEmpty().withMessage('Le motif ne peut pas être vide').isString(),
+    body('observation').optional().isString(),
+    body('diagnostic').optional().isString()
 ];
 
 module.exports = updateConsultationValidation;

@@ -1,7 +1,7 @@
 const { param } = require('express-validator');
 
-const getDisponibilitesByMedecinValidation = [
+const getRendezVousByMedecinValidation = [
     param('medecinId').notEmpty().withMessage('L\'ID du médecin est requis').isMongoId().withMessage('L\'ID du médecin est invalide')
 ];
 
-module.exports = getDisponibilitesByMedecinValidation;
+module.exports = getRendezVousByMedecinValidation;

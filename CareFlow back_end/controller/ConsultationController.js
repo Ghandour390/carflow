@@ -1,10 +1,16 @@
 const Consultation = require('../models/Consultation');
 const DossierMedical = require('../models/DossierMedical');
 const User = require('../models/User');
+const { validationResult } = require('express-validator');
 
 class ConsultationController {
     async createConsultation(req, res) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
             const { medcinId, motif, observation, diagnostic, dossierMedicalId } = req.body;
 
             const medecin = await User.findById(medcinId);
@@ -33,6 +39,11 @@ class ConsultationController {
 
     async getConsultationById(req, res) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
             const { id } = req.params;
             const consultation = await Consultation.findById(id)
                 .populate('medcinId', 'prenom nom')
@@ -49,6 +60,11 @@ class ConsultationController {
 
     async getConsultationsByDossierMedical(req, res) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
             const { dossierMedicalId } = req.params;
             const consultations = await Consultation.find({ dossierMedicalId })
                 .populate('medcinId', 'prenom nom');
@@ -61,6 +77,11 @@ class ConsultationController {
 
     async updateConsultation(req, res) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
             const { id } = req.params;
             const { motif, observation, diagnostic } = req.body;
             const updatedConsultation = await Consultation.findByIdAndUpdate(
@@ -80,6 +101,11 @@ class ConsultationController {
 
     async deleteConsultation(req, res) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
             const { id } = req.params;
             const deletedConsultation = await Consultation.findByIdAndDelete(id);
             if (!deletedConsultation) {

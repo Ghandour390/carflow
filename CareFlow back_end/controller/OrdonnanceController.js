@@ -30,6 +30,11 @@ class OrdonnanceController {
 
     async getOrdonnanceById(req, res) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
             const { id } = req.params;
             const ordonnance = await Ordonnance.findById(id)
                 .populate('consultationId');
@@ -45,6 +50,11 @@ class OrdonnanceController {
 
     async getOrdonnancesByConsultation(req, res) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
             const { consultationId } = req.params;
             const ordonnances = await Ordonnance.find({ consultationId });
             res.status(200).json(ordonnances);
@@ -56,6 +66,11 @@ class OrdonnanceController {
 
     async updateOrdonnance(req, res) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
             const { id } = req.params;
             const { instructions } = req.body;
             const updatedOrdonnance = await Ordonnance.findByIdAndUpdate(
@@ -75,6 +90,11 @@ class OrdonnanceController {
 
     async deleteOrdonnance(req, res) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
             const { id } = req.params;
             const deletedOrdonnance = await Ordonnance.findByIdAndDelete(id);
             if (!deletedOrdonnance) {
