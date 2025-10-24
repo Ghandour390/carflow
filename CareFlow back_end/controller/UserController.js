@@ -1,94 +1,69 @@
-
-const User = require('../models/User');
-const bcrypt = require('bcrypt');
+const UserService = require('../services/UserService');
 
 class UserController {
     async getUser(req, res) {
         try {
-            const user = await User.findById(req.user.id);
+            // req.user.id vient du middleware verifyToken
+            const user = await UserService.getUser(req.user.id);
             res.status(200).json(user);
-        } catch (err) {
-            console.log(err);
-            res.status(500).json({ msg: "Something went wrong" });
+        } catch (error) {
+            console.error(error);
+            res.status(error.statusCode || 500).json({ msg: error.message || "Une erreur est survenue" });
         }
     }
+
     async updateUser(req, res) {
         try {
-            const { nom, prenom, email, password, dateNaissance, genre, adresse, telephone, CIN } = req.body;
             const userId = req.params.id;
-            if(!userId){return res.status(400).json({ msg: "User id is required" });}
-            const user = await User.findById(userId);
-            if (!user) {
-                return res.status(400).json({ msg: "User does not exist" });
-            }
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(password, salt);
-            user.nom = nom || user.nom;
-            user.prenom = prenom || user.prenom ;
-            user.email = email || user.email;
-            user.password = hashedPassword || user.password;
-            user.dateNaissance = dateNaissance || user.dateNaissance;
-            user.genre = genre || user.genre;
-            user.adresse = adresse || user.adresse;
-            user.telephone = telephone || user.telephone;
-            user.CIN = CIN || user.CIN;
-            await user.save();
-            res.status(200).json({ msg: "User updated successfully", user: user });
-        } catch (err) {
-            console.log(err);
-            res.status(500).json({ msg: "Something went wrong" });
+            const updatedUser = await UserService.updateUser(userId, req.body);
+            res.status(200).json({ msg: "Utilisateur mis à jour avec succès", user: updatedUser });
+        } catch (error) {
+            console.error(error);
+            res.status(error.statusCode || 500).json({ msg: error.message || "Une erreur est survenue" });
         }
     }
+
     async deleteUser(req, res) {
         try {
             const userId = req.params.id;
-            if(!userId){return res.status(400).json({ msg: "User id is required" });}
-            const user = await User.findById(userId);
-            if (!user) {
-                return res.status(400).json({ msg: "User does not exist" });
-            }
-            await user.deleteOne({_id: userId});
-            res.status(200).json({ msg: "User deleted successfully" });
-        } catch (err) {
-            console.log(err);
-            res.status(500).json({ msg: "Something went wrong" });
+            const result = await UserService.deleteUser(userId);
+            res.status(200).json(result);
+        } catch (error) {
+            console.error(error);
+            res.status(error.statusCode || 500).json({ msg: error.message || "Une erreur est survenue" });
         }
     }
+
+
+    async confirmationCompte(req, res) {
+        try {
+            const {id} = req.params;
+            const user = await UserService.confirmationCompte(id);
+            res.status(200).json({ msg: "Compte confirmé avec succès", user });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     async getAllUsers(req, res) {
         try {
-            const users = await User.find();
+            const users = await UserService.getAllUsers();
             res.status(200).json(users);
-        } catch (err) {
-            console.log(err);
-            res.status(500).json({ msg: "Something went wrong" });
+        } catch (error) {
+            console.error(error);
+            res.status(error.statusCode || 500).json({ msg: error.message || "Une erreur est survenue" });
         }
     }
+
     async createUser(req, res) {
         try {
-            const { nom, prenom, email, password, dateNaissance, genre, adresse, telephone, CIN } = req.body;
-            const user = await User.findOne({ CIN });
-            if (user) {
-                return res.status(400).json({ msg: "User already exists" });
-            }
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(password, salt);
-            const newUser = new User({
-                nom,
-                prenom,
-                email,
-                password: hashedPassword,
-                dateNaissance,
-                genre,
-                adresse,
-                telephone,
-                CIN
-            });
-            await newUser.save();
-            res.status(200).json({ msg: "User created successfully", user: newUser });
-        } catch (err) {
-            console.log(err);
-            res.status(500).json({ msg: "Something went wrong" });
+            const newUser = await UserService.createUser(req.body);
+            res.status(201).json({ msg: "Utilisateur créé avec succès", user: newUser });
+        } catch (error) {
+            console.error(error);
+            res.status(error.statusCode || 500).json({ msg: error.message || "Une erreur est survenue" });
         }
     }
 }
+
 module.exports = new UserController();

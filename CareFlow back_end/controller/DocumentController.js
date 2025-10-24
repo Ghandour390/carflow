@@ -11,9 +11,9 @@ class DocumentController{
             console.log("error",e);
             return res.status(500).json({msg:"error server"});
         }
-    };
+    }
 
 
-};
+}
 
 module.exports = new DocumentController();

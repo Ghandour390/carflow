@@ -1,6 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 const connectToMongoDB = require('./config/db');
+const redisClient = require('./config/redis');
 
 // Import des routes
 const userRoute = require('./routes/users');
@@ -13,11 +14,17 @@ const consultationRoute = require('./routes/consultations');
 const ordonnanceRoute = require('./routes/ordonnances');
 
 const app = express();
-const port = 9800;
+const port = process.env.PORT || 3000; // Utilise la variable d'environnement PORT, ou 3000 par défaut
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Middleware to attach the redis client to each request
+app.use((req, res, next) => {
+  req.redis = redisClient;
+  next();
+});
 
 // Route de test
 app.get('/', (req, res) => {
@@ -28,6 +35,8 @@ const startServer = async () => {
   try {
   
     await connectToMongoDB();
+    await redisClient.connect();
+    console.log('✅ Connected to Redis successfully');
 
     // Routes
     app.use('/api/users', userRoute);

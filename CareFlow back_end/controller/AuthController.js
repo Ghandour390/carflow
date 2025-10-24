@@ -1,79 +1,61 @@
-const User = require('../models/User');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-
+const AuthService = require('../services/AuthService');
 
 class AuthController {
-     register = async(req,res)=>{
-        try{
-            const {nom,prenom,email,motDePasse,dateNaissance,gender,adresse,CIN} = req.body;
-          const user = await User.findOne({CIN});
-        //   res.json({user:user});
-            if(user){
-                return res.status(400).json({msg:"CIN already exists"});
-            }
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(motDePasse, salt);
-            const newUser = new User({
-                nom,
-                prenom,
-                email,
-                motDePasse: hashedPassword,
-                dateNaissance,
-                gender,
-                adresse,
-                CIN
-            });
-            await newUser.save();
-            res.status(201).json({msg:"User created successfully",user:newUser});    
-        }catch(err){
-            console.log(err);
-            res.status(500).json({msg:"Something went wrong", error: err});
+    register = async (req, res) => {
+        try {
+            const redisClient = req.redis;
+            const newUser = await AuthService.register({ ...req.body, redisClient });
+            res.status(201).json({ msg: "Utilisateur créé avec succès", user: newUser });
+        } catch (error) {
+            console.error(error);
+            res.status(error.statusCode || 500).json({ msg: error.message || "Une erreur est survenue" });
+        }
+    };
+    getConfirmationEmail = async (req, res) => {
+        try {
+            const { email } = req.params;
+            const redisClient = req.redis;
+            await AuthService.getConfirmationEmail({ email, redisClient });
+            res.status(200).json({ msg: "Code de confirmation envoyé avec succès" });
+        } catch (error) {
+            console.error(error);
+            res.status(error.statusCode || 500).json({ msg: error.message || "Une erreur est survenue" });
         }
     };
 
-    
-    login = async(req,res)=>{
-        try{
-            const {email,motDePasse} = req.body;
-            
-            if(!email || !motDePasse){
-                return res.status(400).json({msg:"Email and password are required"});
-            }
-            
-            const user = await User.findOne({email});
-            if(!user){
-                return res.status(400).json({msg:"email does not exist"});
-            }
-            
-            if(!user.motDePasse){
-                return res.status(400).json({msg:"User password not found"});
-            }
-            
-            const isMatch = await bcrypt.compare(motDePasse,user.motDePasse);
-            if(!isMatch){
-                return res.status(400).json({msg:"le mot passe invalid"});
-            }
-            const token = jwt.sign({id:user._id}, process.env.JWT_SECRET, {expiresIn:"1d"});
-            res.status(200).json({msg:"User logged in successfully", user:user,token:token});
-        }catch(err){
-            console.log(err);
-            res.status(500).json({msg:"Something went wrong", error: err.message});
+    confirmationEmail = async (req, res) => {
+        try {
+            const { email ,codeConfirmation } = req.params;
+            const redisClient = req.redis;
+            const user = await AuthService.confirmationEmail({ email, codeConfirmation, redisClient });
+            res.status(200).json({ msg: "Compte confirmé avec succès", user });
+        } catch (error) {
+            console.error(error);
+            res.status(error.statusCode || 500).json({ msg: error.message || "Une erreur est survenue" });
         }
     };
-  logout = async(req,res)=>{
-       try{
-            res.status(200).json({msg:"User logged out successfully"});
-        }catch(err){
-            console.log(err);
-            res.status(500).json({msg:"Something went wrong", error: err});
-        }
-    }    
 
-     
-    
-    
+
+    login = async (req, res) => {
+        try {
+            const redisClient = req.redis;
+            const { user, token } = await AuthService.login({ ...req.body, redisClient });
+            res.status(200).json({ msg: "Utilisateur connecté avec succès", user, token });
+        } catch (error) {
+            console.error(error);
+            res.status(error.statusCode || 500).json({ msg: error.message || "Une erreur est survenue" });
+        }
+    };
+
+    logout = async (req, res) => {
+        try {
+            // Ici, vous pourriez ajouter une logique de blacklistage de token si nécessaire
+            res.status(200).json({ msg: "Utilisateur déconnecté avec succès" });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ msg: "Une erreur est survenue", error: error.message });
+        }
+    }
 }
-
 
 module.exports = new AuthController();

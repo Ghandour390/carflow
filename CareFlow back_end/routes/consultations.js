@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const consultationController = require('../controller/ConsultationController');
 
-// Importations des validations
+
 const createConsultationValidation = require('../validationsRequests/consultation/createConsultationValidation');
 const consultationIdValidation = require('../validationsRequests/consultation/consultationIdValidation');
 const getConsultationsByDossierValidation = require('../validationsRequests/consultation/getConsultationsByDossierValidation');

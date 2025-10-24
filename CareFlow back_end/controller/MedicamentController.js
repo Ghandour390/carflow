@@ -1,9 +1,14 @@
 const Medicament = require('../models/Medicament');
 const Ordonnance = require('../models/Ordonnance');
+const { validationResult } = require('express-validator');
 
 class MedicamentController {
     async createMedicament(req, res) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
             const { nom, dosage, frequence, ordonnanceId } = req.body;
 
             const ordonnance = await Ordonnance.findById(ordonnanceId);
@@ -26,6 +31,10 @@ class MedicamentController {
 
     async getMedicamentById(req, res) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
             const { id } = req.params;
             const medicament = await Medicament.findById(id)
                 .populate('ordonnanceId');
@@ -41,6 +50,10 @@ class MedicamentController {
 
     async getMedicamentsByOrdonnance(req, res) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
             const { ordonnanceId } = req.params;
             const medicaments = await Medicament.find({ ordonnanceId });
             res.status(200).json(medicaments);
@@ -52,6 +65,10 @@ class MedicamentController {
 
     async updateMedicament(req, res) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
             const { id } = req.params;
             const { nom, dosage, frequence } = req.body;
             const updatedMedicament = await Medicament.findByIdAndUpdate(
@@ -71,6 +88,10 @@ class MedicamentController {
 
     async deleteMedicament(req, res) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
             const { id } = req.params;
             const deletedMedicament = await Medicament.findByIdAndDelete(id);
             if (!deletedMedicament) {

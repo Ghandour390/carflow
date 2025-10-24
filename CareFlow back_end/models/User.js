@@ -36,9 +36,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    roleId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Role',
+    role: {
+        type: String,
+        enum: ['admin', 'medecin', 'infirmier', 'secretaire', 'patient'],
+        required: true ,
+        default: 'patient'
+    },
+    numeroTelephone: {
+        type: String,
         required: false
     },
     specialiteId: {
@@ -48,8 +53,18 @@ const userSchema = new mongoose.Schema({
     },
     estActif: {
         type: Boolean,
-        default: true
+        default: false
     },
+    confirmateurId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: false
+    },
+    conformationEmail:{
+        type: Boolean,
+        default: false
+    },
+    
     parentId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

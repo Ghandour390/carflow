@@ -1,10 +1,6 @@
-const RendezVous = require('../models/RendezVous');
-const Disponibilite = require('../models/Disponibilite');
-const moment = require('moment');
-const User = require('../models/User');
 const { validationResult } = require('express-validator');
+const RendezVousService = require('../services/RendezVousService');
 
-// medecinId date heureDebut heureFin  statut patientId
 class RendezVousController{
     
 async generateSlots(req, res) {
@@ -14,60 +10,13 @@ async generateSlots(req, res) {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { medecinId, jour, heureFin, heureDebut, dureeSlot } = req.body;
-    const slots = [];
-    const start = moment(heureDebut, 'HH:mm');
-    const end = moment(heureFin, 'HH:mm');
-
-    const now = moment();
-    let targetDate = moment().day(jour).startOf('day');
-
-
-    if (targetDate.isBefore(now.startOf('day'))) {
-      targetDate.add(1, 'week');
-    }
-
-    if (targetDate.isSame(now, 'day') && start.isBefore(now)) {
-      return res.status(400).json({ msg: "L'heure de début ne peut pas être dans le passé pour un rendez-vous aujourd'hui." });
-    }
-
-
-    const existing = await Disponibilite.findOne({
-      medecinId,
-      date: targetDate.toDate(),
-    });
-
-    if (existing) {
-      return res.status(400).json({ msg: "Slots deja generés pour ce jour" });
-    }
-    const disponibilite = await Disponibilite.create({
-      medecinId,
-      date: targetDate.toDate(),
-      heureDebut,
-      heureFin,
-    });
-
-    while (start.isBefore(end)) {
-      const next = start.clone().add(dureeSlot, 'minutes');
-      if (next.isAfter(end)) break;
-      slots.push({
-        heureDebut: start.format('HH:mm'),
-        heureFin: next.format('HH:mm'),
-        medecinId,
-        date: targetDate.toDate(),
-        statut: 'disponible',
-      });
-      start.add(dureeSlot, 'minutes');
-    }
-
-    const disponibilites = await RendezVous.insertMany(slots);
-    res.status(201).json({ msg: "Slots generés avec succès", slots: disponibilites });
+    const slots = await RendezVousService.generateSlots(req.body);
+    res.status(201).json({ msg: "Slots générés avec succès", slots });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: "Erreur serveur lors de la génération des créneaux" });
+    console.error(error);
+    res.status(error.statusCode || 500).json({ msg: error.message || "Erreur serveur lors de la génération des créneaux" });
   }
-};
-
+}
 
     async getDisponibilitesByMedecin(req,res){
         try {
@@ -76,17 +25,13 @@ async generateSlots(req, res) {
                 return res.status(400).json({ errors: errors.array() });
             }
             const { medecinId } = req.params;
-            const medecin = await User.findById(medecinId);
-            if(!medecin){
-                return res.status(404).json({ msg: "Medecin not found" });
-            }
-            const disponibilites = await RendezVous.find({ medecinId: medecinId , statut: 'disponible'});
+            const disponibilites = await RendezVousService.getDisponibilitesByMedecin(medecinId);
             res.status(200).json(disponibilites);
         } catch (error) {
             console.error(error);
-            res.status(500).json({ msg: "Erreur serveur lors de la récupération des disponibilités" });
+            res.status(error.statusCode || 500).json({ msg: error.message || "Erreur serveur lors de la récupération des disponibilités" });
         }
-    };
+    }
     async getDisponibilitesByMedecinAndDate(req, res){
         try {
             const errors = validationResult(req);
@@ -94,20 +39,13 @@ async generateSlots(req, res) {
                 return res.status(400).json({ errors: errors.array() });
             }
             const { medecinId, date } = req.params;
-            const startOfDay = moment(date).startOf('day').toDate();
-            const endOfDay = moment(date).endOf('day').toDate();
-
-            const disponibilites = await RendezVous.find({
-                medecinId: medecinId,
-                date: { $gte: startOfDay, $lte: endOfDay },
-                statut: 'disponible'
-            });
+            const disponibilites = await RendezVousService.getDisponibilitesByMedecinAndDate(medecinId, date);
             res.status(200).json(disponibilites);
         } catch (error) {
             console.error(error);
-            res.status(500).json({ msg: "Erreur serveur lors de la récupération des disponibilités" });
+            res.status(error.statusCode || 500).json({ msg: error.message || "Erreur serveur lors de la récupération des disponibilités" });
         }
-    };
+    }
     async getDisponibilitesByDate(req , res){
         try {
             const errors = validationResult(req);
@@ -116,19 +54,13 @@ async generateSlots(req, res) {
             }
 
             const { date } = req.params;
-            const startOfDay = moment(date).startOf('day').toDate();
-            const endOfDay = moment(date).endOf('day').toDate();
-
-            const disponibilites = await RendezVous.find({
-                date: { $gte: startOfDay, $lte: endOfDay },
-                statut: 'disponible'
-            });
+            const disponibilites = await RendezVousService.getDisponibilitesByDate(date);
             res.status(200).json(disponibilites);
         } catch (error) {
             console.error(error);
-            res.status(500).json({ msg: "Erreur serveur lors de la récupération des disponibilités" });
+            res.status(error.statusCode || 500).json({ msg: error.message || "Erreur serveur lors de la récupération des disponibilités" });
         }
-    };
+    }
 
     async getRendezVousByPatient(req, res){
         try {
@@ -138,13 +70,13 @@ async generateSlots(req, res) {
             }
 
             const { patientId } = req.params;
-            const rendezVous = await RendezVous.find({ patientId: patientId });
+            const rendezVous = await RendezVousService.getRendezVousByPatient(patientId);
             res.status(200).json(rendezVous);
         } catch (error) {
             console.error(error);
-            res.status(500).json({ msg: "Erreur serveur lors de la récupération des rendez-vous" });
+            res.status(error.statusCode || 500).json({ msg: error.message || "Erreur serveur lors de la récupération des rendez-vous" });
         }
-    };
+    }
     async reserverRendezVous(req, res) {
         try {
             const errors = validationResult(req);
@@ -154,44 +86,11 @@ async generateSlots(req, res) {
 
             const { disponibiliteId } = req.params;
             const { patientId } = req.body;
-            
-            const patient = await User.findById(patientId);
-            if (!patient) {
-                return res.status(404).json({ msg: "Patient non trouvé" });
-            }
-
-            const disponibilite = await RendezVous.findById(disponibiliteId);
-            if (!disponibilite) {
-                return res.status(404).json({ msg: "Disponibilité non trouvée" });
-            }
-            if (disponibilite.statut !== 'disponible') {
-                return res.status(400).json({ msg: "Ce créneau est déjà réservé" });
-            }
-            
-      
-            const startOfDay = moment(disponibilite.date).startOf('day').toDate();
-            const endOfDay = moment(disponibilite.date).endOf('day').toDate();
-
-            const existingRendezVous = await RendezVous.findOne({
-                patientId,
-                date: { $gte: startOfDay, $lte: endOfDay },
-                statut: { $in: ['en_attente', 'confirme'] }
-            });
-
-            if (existingRendezVous) {
-                return res.status(400).json({ msg: "Ce patient a déjà un rendez-vous prévu pour ce jour." });
-            }
-   
-
-            disponibilite.patientId = patientId;
-            disponibilite.statut = 'en_attente';
-       
-            await disponibilite.save();
-            
-            res.status(200).json({ msg: "Rendez-vous réservé avec succès", rendezVous: disponibilite });
+            const rendezVous = await RendezVousService.reserverRendezVous(disponibiliteId, patientId);
+            res.status(200).json({ msg: "Rendez-vous réservé avec succès", rendezVous });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ msg: "Erreur serveur lors de la réservation du rendez-vous" });
+            res.status(error.statusCode || 500).json({ msg: error.message || "Erreur serveur lors de la réservation du rendez-vous" });
         }
     }
     async anulluerRendezVous(req, res){
@@ -202,13 +101,13 @@ async generateSlots(req, res) {
             }
 
             const { id } = req.params;
-            const rendezVous = await RendezVous.findByIdAndUpdate(id, { statut: 'annule' }, { new: true });
+            const rendezVous = await RendezVousService.anulluerRendezVous(id);
             res.status(200).json({ msg: "Rendez-vous annulé avec succès",rendezVous });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ msg: "Erreur serveur lors de l'annulation du rendez-vous" });
+            res.status(error.statusCode || 500).json({ msg: error.message || "Erreur serveur lors de l'annulation du rendez-vous" });
         }
-    };
+    }
     async ConfirmerRendezVous(req, res){
         try {
             const errors = validationResult(req);
@@ -217,16 +116,13 @@ async generateSlots(req, res) {
             }
 
             const { id } = req.params;
-            const rendezVous = await RendezVous.findByIdAndUpdate(id, { statut: 'confirme' }, { new: true });
-            if (!rendezVous) {
-                return res.status(404).json({ msg: "Rendez-vous non trouvé" });
-            }
+            const rendezVous = await RendezVousService.confirmerRendezVous(id);
             res.status(200).json({ msg: "Rendez-vous confirmé avec succès",rendezVous });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ msg: "Erreur serveur lors de la confirmation du rendez-vous" });
+            res.status(error.statusCode || 500).json({ msg: error.message || "Erreur serveur lors de la confirmation du rendez-vous" });
         }
-    };
+    }
     
     async annulerRendezVousPatient(req, res) {
         try {
@@ -237,25 +133,11 @@ async generateSlots(req, res) {
 
             const { id } = req.params;
             const { patientId } = req.body;
-
-            const rendezVous = await RendezVous.findById(id);
-
-            if (!rendezVous) {
-                return res.status(404).json({ msg: "Rendez-vous non trouvé" });
-            }
-
-            // Vérification d'autorisation : le rendez-vous appartient-il au patient ?
-            if (rendezVous.patientId.toString() !== patientId) {
-                return res.status(403).json({ msg: "Action non autorisée. Ce rendez-vous ne vous appartient pas." });
-            }
-
-            rendezVous.statut = 'annule';
-            await rendezVous.save();
-
+            const rendezVous = await RendezVousService.annulerRendezVousPatient(id, patientId);
             res.status(200).json({ msg: "Rendez-vous annulé avec succès", rendezVous });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ msg: "Erreur serveur lors de l'annulation du rendez-vous" });
+            res.status(error.statusCode || 500).json({ msg: error.message || "Erreur serveur lors de l'annulation du rendez-vous" });
         }
     }
 
@@ -267,21 +149,11 @@ async generateSlots(req, res) {
             }
 
             const { medecinId } = req.params;
-
-            const medecin = await User.findById(medecinId);
-            if (!medecin) {
-                return res.status(404).json({ msg: "Médecin non trouvé" });
-            }
-
-            const rendezVous = await RendezVous.find({
-                medecinId: medecinId,
-                statut: { $ne: 'disponible' }
-            }).populate('patientId', 'prenom nom').sort({ date: -1 });
-
+            const rendezVous = await RendezVousService.getRendezVousByMedecin(medecinId);
             res.status(200).json(rendezVous);
         } catch (error) {
             console.error(error);
-            res.status(500).json({ msg: "Erreur serveur lors de la récupération des rendez-vous du médecin" });
+            res.status(error.statusCode || 500).json({ msg: error.message || "Erreur serveur lors de la récupération des rendez-vous du médecin" });
         }
     }
 }

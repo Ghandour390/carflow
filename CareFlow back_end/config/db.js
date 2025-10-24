@@ -2,8 +2,7 @@ const mongoose = require("mongoose");
 
 async function connectToMongoDB() {
   try {
-    const mongoURI =  'mongodb://localhost:27017/careflow';
-    //  process.env.MONGO_URL ||
+    const mongoURI = process.env.MONGO_URI || `mongodb://${process.env.MONGODB_SERVER || 'localhost'}:${process.env.MONGODB_PORT || '27018'}/careflow`; // Utilise les variables d'environnement avec fallback
 
     await mongoose.connect(mongoURI);
 
@@ -13,7 +12,7 @@ async function connectToMongoDB() {
     process.exit(1); // Quitte le serveur si la connexion échoue
   }
 
-  // Optionnel : pour afficher un message en cas de déconnexion
+
   mongoose.connection.on('disconnected', () => {
     console.warn('⚠️ MongoDB disconnected');
   });

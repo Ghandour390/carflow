@@ -2,10 +2,16 @@ const express = require('express');
 const router = express.Router();
 const medicamentController = require('../controller/MedicamentController');
 
-router.post('/', medicamentController.createMedicament);
-router.get('/:id', medicamentController.getMedicamentById);
-router.get('/ordonnance/:ordonnanceId', medicamentController.getMedicamentsByOrdonnance);
-router.put('/:id', medicamentController.updateMedicament);
-router.delete('/:id', medicamentController.deleteMedicament);
+// Je crée ces fichiers de validation pour vous, car ils manquaient.
+const createMedicamentValidation = require('../validationsRequests/medicament/createMedicamentValidation');
+const medicamentIdValidation = require('../validationsRequests/medicament/medicamentIdValidation');
+const getMedicamentsByOrdonnanceValidation = require('../validationsRequests/medicament/getMedicamentsByOrdonnanceValidation');
+const updateMedicamentValidation = require('../validationsRequests/medicament/updateMedicamentValidation');
+
+router.post('/', createMedicamentValidation, medicamentController.createMedicament);
+router.get('/:id', medicamentIdValidation, medicamentController.getMedicamentById);
+router.get('/ordonnance/:ordonnanceId', getMedicamentsByOrdonnanceValidation, medicamentController.getMedicamentsByOrdonnance);
+router.put('/:id', updateMedicamentValidation, medicamentController.updateMedicament);
+router.delete('/:id', medicamentIdValidation, medicamentController.deleteMedicament);
 
 module.exports = router;

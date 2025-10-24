@@ -8,12 +8,12 @@ const dossierMedicalSchema = new mongoose.Schema({
     patientId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        required: [true, 'Le champ patientId est requis']
     },
     medecinId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        required: [true, 'Le champ medecinId est requis']
     },
     etat: {
         type: String,

@@ -54,7 +54,7 @@ class RoleController{
             console.log(err);
             res.status(500).json({ msg: "Something went wrong" });
         }
-    };
+    }
     async getRoleById(req,res){
         try{
             const id = req.body.id;

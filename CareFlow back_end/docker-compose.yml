@@ -1,41 +1,74 @@
 services:
+
   app:
-    build: .
-    container_name: CAREFLOW
-    restart: always
+    build:
+      context: . 
+      dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "${PORT:-3000}:${PORT:-3000}"
     volumes:
       - .:/app
-      - /app/node_modules
-    environment:
-      - MONGO_URL=mongodb://localhost:27017/blogDB
+      - /app/node_modules 
+    env_file:
+      - .env.docker
     depends_on:
-      - mongo
+      - mongo 
+      - redis 
+      - maildev
+    networks:
+      - carflow-network
+
 
   mongo:
-    image: mongo:6
-    container_name: mongodb
-    restart: always
+    image: mongo:6.0
+    command: mongod --port ${MONGODB_PORT:-27018}
     ports:
-      - "27017:27017"
+      - "${MONGODB_PORT:-27018}:${MONGODB_PORT:-27018}"
     volumes:
-      - mongo_data:/data/db
+      - mongo-data:/data/db
+    networks:
+      - carflow-network
 
-
-  mongo-express:
-    image: mongo-express
-    container_name: mongo_express
-    restart: always
+  # Service pour Redis
+  redis:
+    image: redis:6-alpine
     ports:
-      - "8081:8081"
+      - "6379:6379" 
+    volumes:
+      - redis-data:/data 
+    networks:
+      - carflow-network
+
+  # Service pour MinIO (stockage de fichiers compatible S3)
+  minio:
+    image: minio/minio:latest
+    ports:
+      - "${MINIO_PORT:-9100}:${MINIO_PORT:-9100}"  # API MinIO
+      - "9001:9001"  # Console MinIO
     environment:
-      - ME_CONFIG_MONGODB_SERVER=mongo
-      - ME_CONFIG_MONGODB_PORT=27017
-      - ME_CONFIG_BASICAUTH_USERNAME=admin
-      - ME_CONFIG_BASICAUTH_PASSWORD=1234
-    depends_on:
-      - mongo
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-admin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-password}
+    volumes:
+      - minio-data:/data  # Persistance des données MinIO
+    command: server --console-address ":9001" /data
+    networks:
+      - carflow-network
+    # Note: healthcheck removed because some MinIO images don't include `mc` command.
+
+  # MailDev - simple SMTP server for development/testing
+  maildev:
+    image: maildev/maildev:latest
+    ports:
+      - "1025:1025" # SMTP
+      - "1080:1080" # Web UI
+    networks:
+      - carflow-network
 
 volumes:
-  mongo_data:
+  mongo-data: {}
+  redis-data: {}
+  minio-data: {}
+
+networks:
+  carflow-network: # Définition d'un réseau personnalisé pour les services
+    driver: bridge
