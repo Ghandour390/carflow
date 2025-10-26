@@ -10,10 +10,13 @@ const deleteDossierMedicalValidation = require('../validationsRequests/dossierMe
 const getDossiersMedicalByPatientValidation = require('../validationsRequests/dossierMedical/getDossiersMedicalByPatientValidation');
 
 
-router.post('/', createDossierMedicalValidation, dossierMedicalController.createDossierMedical);
-router.get('/:id', getDossierMedicalByIdValidation, dossierMedicalController.getDossierMedicalById);
-router.get('/patient/:patientId', getDossiersMedicalByPatientValidation, dossierMedicalController.getDossiersMedicalByPatient);
-router.put('/:id', updateDossierMedicalValidation, dossierMedicalController.updateDossierMedical);
-router.delete('/:id', deleteDossierMedicalValidation, dossierMedicalController.deleteDossierMedical);
+const verifyToken = require('../medlwers/verifyToken');
+const isEmailConfirmed = require('../medlwers/isEmailConfirmed');
+
+router.post('/', verifyToken, isEmailConfirmed, createDossierMedicalValidation, dossierMedicalController.createDossierMedical);
+router.get('/:id', verifyToken, isEmailConfirmed, getDossierMedicalByIdValidation, dossierMedicalController.getDossierMedicalById);
+router.get('/patient/:patientId', verifyToken, isEmailConfirmed, getDossiersMedicalByPatientValidation, dossierMedicalController.getDossiersMedicalByPatient);
+router.put('/:id', verifyToken, isEmailConfirmed, updateDossierMedicalValidation, dossierMedicalController.updateDossierMedical);
+router.delete('/:id', verifyToken, isEmailConfirmed, deleteDossierMedicalValidation, dossierMedicalController.deleteDossierMedical);
 
 module.exports = router;

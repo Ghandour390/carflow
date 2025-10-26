@@ -60,7 +60,7 @@ const userSchema = new mongoose.Schema({
         ref: 'User',
         required: false
     },
-    conformationEmail:{
+    isConfirmed: {
         type: Boolean,
         default: false
     },

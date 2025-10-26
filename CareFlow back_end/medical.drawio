@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="dossier_medical_v2" name="Dossier Medical UML">
-        <mxGraphModel dx="1081" dy="486" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+        <mxGraphModel dx="952" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -73,7 +73,7 @@
                 <mxCell id="analyse" value="Analyse" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;rounded=1;" parent="1" vertex="1">
                     <mxGeometry x="240" y="450" width="220" height="140" as="geometry"/>
                 </mxCell>
-                <mxCell id="analyse-attr" value="_id: ObjectId&#xa;typeAnalyse: String&#xa;dateAnalyse: Date&#xa;resultat: String&#xa;dossierMedicalId: ObjectId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="analyse" vertex="1">
+                <mxCell id="analyse-attr" value="_id: ObjectId&#xa;typeAnalyse: String&#xa;dateAnalyse: Date&#xa;technicient-lab:Object&#xa;resultat: String&#xa;dossierMedicalId: ObjectId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="analyse" vertex="1">
                     <mxGeometry y="30" width="220" height="110" as="geometry"/>
                 </mxCell>
                 <mxCell id="vaccination" value="Vaccination" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;rounded=1;" parent="1" vertex="1">

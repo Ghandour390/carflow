@@ -1,6 +1,12 @@
-// Small test helper kept for local manual testing.
-// To run the full test, uncomment the code below or use the `services/testMailServiceRunner.js` helper.
+const MailService = require('./MailService');
 
-module.exports = {
-	// no-op export to avoid empty-file lint error
-};
+(async () => {
+  try {
+    const code = await MailService.sendConfirmationCode('abdelhakghandour6@gmail.com', 'abdelhak', 'ghandour');
+    console.log('Code généré:', code);
+  } catch (err) {
+    console.error('Envoi échoué:', err);
+  } finally {
+    process.exit(0);
+  }
+})();

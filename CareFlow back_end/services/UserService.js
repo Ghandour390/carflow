@@ -80,6 +80,28 @@ class UserService {
         await user.save();
         return user;
     }
+
+    async getMedecinsBySpecialite(specialiteId) {
+        try {
+            const medecins = await User.find({
+                role: 'medecin',
+                specialiteId: specialiteId,
+                estActif: true,
+                isConfirmed: true
+            }).select('-motDePasse')
+              .populate('specialiteId');
+
+            if (!medecins.length) {
+                const error = new Error("Aucun médecin trouvé pour cette spécialité.");
+                error.statusCode = 404;
+                throw error;
+            }
+
+            return medecins;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = new UserService();

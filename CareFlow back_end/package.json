@@ -1,7 +1,7 @@
 {
   "name": "careflow-m",
   "version": "1.0.0",
-  "description": "Projet Express + MongoDB + Mongoose",
+  "description": "Projet Express + MongoDB + Mongoose + redis + nodemailer + multer + minio + jwt + bcrypt + dotenv + moment + express-validator",
   "license": "ISC",
   "author": "ABDELHAK GHANDOUR",
   "type": "commonjs",

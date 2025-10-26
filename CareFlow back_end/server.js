@@ -12,6 +12,10 @@ const rendezVous = require('./routes/rendezVous');
 const dossierMedicalRoute = require('./routes/dossiersMedical');
 const consultationRoute = require('./routes/consultations');
 const ordonnanceRoute = require('./routes/ordonnances');
+const analyseRoute = require('./routes/analyses');
+const vaccinationRoute = require('./routes/vaccinations');
+const antecedentRoute = require('./routes/antecedents');
+const notificationRoute = require('./routes/notifications');
 
 const app = express();
 const port = process.env.PORT || 3000; // Utilise la variable d'environnement PORT, ou 3000 par défaut
@@ -45,6 +49,10 @@ const startServer = async () => {
     app.use('/api/dossiers-medicaux', dossierMedicalRoute);
     app.use('/api/consultations', consultationRoute);
     app.use('/api/ordonnances', ordonnanceRoute);
+    app.use('/api/analyses', analyseRoute);
+    app.use('/api/vaccinations', vaccinationRoute);
+    app.use('/api/antecedents', antecedentRoute);
+    app.use('/api/notifications', notificationRoute);
 
     // app.use('/api/specialites', specialiteRoute);
     app.use('/api/documents', documentRoute);

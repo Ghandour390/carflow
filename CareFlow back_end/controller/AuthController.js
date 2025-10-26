@@ -14,8 +14,7 @@ class AuthController {
     getConfirmationEmail = async (req, res) => {
         try {
             const { email } = req.params;
-            const redisClient = req.redis;
-            await AuthService.getConfirmationEmail({ email, redisClient });
+            await AuthService.getConfirmationEmail({ email });
             res.status(200).json({ msg: "Code de confirmation envoyé avec succès" });
         } catch (error) {
             console.error(error);
@@ -25,9 +24,8 @@ class AuthController {
 
     confirmationEmail = async (req, res) => {
         try {
-            const { email ,codeConfirmation } = req.params;
-            const redisClient = req.redis;
-            const user = await AuthService.confirmationEmail({ email, codeConfirmation, redisClient });
+            const { email, codeConfirmation } = req.params;
+            const user = await AuthService.confirmationEmail({ email, codeConfirmation });
             res.status(200).json({ msg: "Compte confirmé avec succès", user });
         } catch (error) {
             console.error(error);

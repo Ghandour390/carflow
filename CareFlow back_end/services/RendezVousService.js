@@ -2,6 +2,7 @@ const RendezVous = require('../models/RendezVous');
 const Disponibilite = require('../models/Disponibilite');
 const User = require('../models/User');
 const moment = require('moment');
+const NotificationService = require('./NotificationService');
 
 class RendezVousService {
     async generateSlots({ medecinId, jour, heureFin, heureDebut, dureeSlot }) {
@@ -124,11 +125,26 @@ class RendezVousService {
 
         disponibilite.patientId = patientId;
         disponibilite.statut = 'en_attente';
-        return disponibilite.save();
+        const rendezVousSaved = await disponibilite.save();
+
+        // Envoyer une notification au médecin
+        await NotificationService.sendRendezVousNotification(rendezVousSaved, 'reservation');
+
+        return rendezVousSaved;
     }
 
     async anulluerRendezVous(id) {
-        return RendezVous.findByIdAndUpdate(id, { statut: 'annule' }, { new: true });
+        const rendezVous = await RendezVous.findByIdAndUpdate(id, { statut: 'annule' }, { new: true });
+        if (!rendezVous) {
+            const error = new Error("Rendez-vous non trouvé");
+            error.statusCode = 404;
+            throw error;
+        }
+
+        // Envoyer une notification au patient
+        await NotificationService.sendRendezVousNotification(rendezVous, 'annulation_medecin');
+
+        return rendezVous;
     }
 
     async confirmerRendezVous(id) {
@@ -138,6 +154,10 @@ class RendezVousService {
             error.statusCode = 404;
             throw error;
         }
+
+        // Envoyer une notification au patient
+        await NotificationService.sendRendezVousNotification(rendezVous, 'confirmation');
+
         return rendezVous;
     }
 
@@ -154,7 +174,12 @@ class RendezVousService {
             throw error;
         }
         rendezVous.statut = 'annule';
-        return rendezVous.save();
+        const rendezVousSaved = await rendezVous.save();
+
+        // Envoyer une notification au médecin
+        await NotificationService.sendRendezVousNotification(rendezVousSaved, 'annulation_patient');
+
+        return rendezVousSaved;
     }
 
     async getRendezVousByMedecin(medecinId) {

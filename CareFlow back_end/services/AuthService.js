@@ -94,25 +94,38 @@ class AuthService {
         return { user, token };
     }
 
-    async getConfirmationEmail({ email}) {
-        return MailService.sendConfirmationCode(email);
+    async getConfirmationEmail({ email }) {
+        const user = await User.findOne({ email });
+        if (!user) {
+            const error = new Error("Aucun utilisateur trouvé avec cet email.");
+            error.statusCode = 404;
+            throw error;
+        }
+        return MailService.sendConfirmationCode(email, user.prenom, user.nom);
     }
 
     async confirmationEmail({ email, codeConfirmation }) {
-        const ok = await MailService.verifyConfirmationCode(email, codeConfirmation);
-        if (!ok) {
-            const error = new Error("Code de confirmation invalide ou expiré.");
-            error.statusCode = 400;
-            throw error;
-        }
-
-        const user = await User.findOneAndUpdate({ email }, { conformationEmail: true }, { new: true }).select('-motDePasse');
+        const user = await User.findOne({ email });
         if (!user) {
             const error = new Error("Utilisateur non trouvé.");
             error.statusCode = 404;
             throw error;
         }
-        await MailService.clearConfirmationCode(email); 
+
+        const isValid = await MailService.verifyConfirmationCode(email, codeConfirmation);
+        if (!isValid) {
+            const error = new Error("Code de confirmation invalide ou expiré.");
+            error.statusCode = 400;
+            throw error;
+        }
+
+        user.isConfirmed = true;
+        await user.save();
+
+        // Clear the confirmation code after successful verification
+        await MailService.clearConfirmationCode(email);
+
+        user.motDePasse = undefined;
         return user;
     }
 }

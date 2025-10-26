@@ -64,6 +64,24 @@ class UserController {
             res.status(error.statusCode || 500).json({ msg: error.message || "Une erreur est survenue" });
         }
     }
+
+    async getMedecinsBySpecialite(req, res) {
+        try {
+            const specialiteId = req.params.specialiteId;
+            if (!specialiteId) {
+                return res.status(400).json({ msg: "L'ID de la spécialité est requis" });
+            }
+
+            const medecins = await UserService.getMedecinsBySpecialite(specialiteId);
+            res.status(200).json({
+                msg: "Médecins récupérés avec succès",
+                medecins: medecins
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(error.statusCode || 500).json({ msg: error.message || "Une erreur est survenue" });
+        }
+    }
 }
 
 module.exports = new UserController();

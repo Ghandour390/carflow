@@ -1,0 +1,289 @@
+{
+	"info": {
+		"_postman_id": "specialites-collection",
+		"name": "Specialites API",
+		"description": "Collection pour gérer les spécialités médicales",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Récupérer toutes les spécialités",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/specialites",
+					"host": ["{{baseUrl}}"],
+					"path": ["specialites"]
+				},
+				"description": "Récupère la liste de toutes les spécialités médicales"
+			},
+			"response": [
+				{
+					"name": "Succès",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/specialites"
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [],
+					"cookie": [],
+					"body": [
+						{
+							"_id": "5f9d7b3b9d3e4b0017b9c1a1",
+							"name": "Cardiologie"
+						},
+						{
+							"_id": "5f9d7b3b9d3e4b0017b9c1a2",
+							"name": "Pédiatrie"
+						},
+						{
+							"_id": "5f9d7b3b9d3e4b0017b9c1a3",
+							"name": "Dermatologie"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Créer une spécialité",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Neurologie\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/specialites",
+					"host": ["{{baseUrl}}"],
+					"path": ["specialites"]
+				},
+				"description": "Crée une nouvelle spécialité médicale"
+			},
+			"response": [
+				{
+					"name": "Succès",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Neurologie\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/specialites"
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [],
+					"cookie": [],
+					"body": {
+						"msg": "Specialite created successfully",
+						"specialite": {
+							"_id": "5f9d7b3b9d3e4b0017b9c1a4",
+							"name": "Neurologie"
+						}
+					}
+				},
+				{
+					"name": "Erreur",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/specialites"
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [],
+					"cookie": [],
+					"body": {
+						"msg": "Le nom de la spécialité est requis"
+					}
+				}
+			]
+		},
+		{
+			"name": "Mettre à jour une spécialité",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Neurologie pédiatrique\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/specialites/5f9d7b3b9d3e4b0017b9c1a4",
+					"host": ["{{baseUrl}}"],
+					"path": ["specialites", "5f9d7b3b9d3e4b0017b9c1a4"]
+				},
+				"description": "Met à jour une spécialité existante"
+			},
+			"response": [
+				{
+					"name": "Succès",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Neurologie pédiatrique\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/specialites/5f9d7b3b9d3e4b0017b9c1a4"
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [],
+					"cookie": [],
+					"body": {
+						"msg": "Specialite updated successfully",
+						"specialite": {
+							"_id": "5f9d7b3b9d3e4b0017b9c1a4",
+							"name": "Neurologie pédiatrique"
+						}
+					}
+				},
+				{
+					"name": "Erreur - Spécialité non trouvée",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Neurologie pédiatrique\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/specialites/invalid_id"
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [],
+					"cookie": [],
+					"body": {
+						"msg": "Specialite does not exist"
+					}
+				}
+			]
+		},
+		{
+			"name": "Supprimer une spécialité",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/specialites/5f9d7b3b9d3e4b0017b9c1a4",
+					"host": ["{{baseUrl}}"],
+					"path": ["specialites", "5f9d7b3b9d3e4b0017b9c1a4"]
+				},
+				"description": "Supprime une spécialité existante"
+			},
+			"response": [
+				{
+					"name": "Succès",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/specialites/5f9d7b3b9d3e4b0017b9c1a4"
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [],
+					"cookie": [],
+					"body": {
+						"msg": "Specialite deleted successfully"
+					}
+				},
+				{
+					"name": "Erreur - Spécialité non trouvée",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/specialites/invalid_id"
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [],
+					"cookie": [],
+					"body": {
+						"msg": "Specialite does not exist"
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000/api"
+		}
+	]
+}
