@@ -1,7 +1,6 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const redisClient = require('../config/redis');
 const MailService = require('./MailService');
 
 class AuthService {
@@ -9,37 +8,37 @@ class AuthService {
         console.log(`email=${email} and CIN=${CIN}`);
         const existingUser = await User.findOne({ $or: [{ email }, { CIN }] });
         if (existingUser) {
-        const message = existingUser.email === email
-            ? "Un utilisateur avec cet email existe déjà."
-            : "Un utilisateur avec ce CIN existe déjà.";
-        const error = new Error(message);
-        error.statusCode = 400;
-        throw error;
+            const message = existingUser.email === email
+                ? "Un utilisateur avec cet email existe déjà."
+                : "Un utilisateur avec ce CIN existe déjà.";
+            const error = new Error(message);
+            error.statusCode = 400;
+            throw error;
         }
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(motDePasse, salt);
 
         const newUser = new User({
-        nom,
-        prenom,
-        email,
-        motDePasse: hashedPassword,
-        dateNaissance,
-        gender,
-        adresse,
-        CIN,
+            nom,
+            prenom,
+            email,
+            motDePasse: hashedPassword,
+            dateNaissance,
+            gender,
+            adresse,
+            CIN,
         });
 
         await newUser.save();
 
-    try {
-    console.log(`ℹ️ AuthService: sending confirmation email to ${email}`);
-    const code = await MailService.sendConfirmationCode(email, prenom, nom);
-    console.log(`✅ AuthService: confirmation email sent to ${email} (code=${code})`);
-    } catch (err) {
-    console.error('❌ AuthService: failed to send confirmation email:', err.message || err);
-    }
+        try {
+            console.log(`ℹ️ AuthService: sending confirmation email to ${newUser.email}`);
+            await MailService.sendConfirmationCode(newUser.email, newUser.prenom, newUser.nom);
+            console.log(`✅ AuthService: confirmation email sent to ${newUser.email}`);
+        } catch (err) {
+            console.error('❌ AuthService: failed to send confirmation email:', err.message || err);
+        }
 
         newUser.motDePasse = undefined;
         return newUser;
@@ -47,7 +46,7 @@ class AuthService {
 
 
 
-    async login({ email, motDePasse }) {
+    async login({ email, motDePasse, redisClient }) {
         if (!email || !motDePasse) {
             const error = new Error("L'email et le mot de passe sont requis.");
             error.statusCode = 400;
@@ -72,9 +71,18 @@ class AuthService {
         }
 
         const user = await User.findOne({ email });
+        console.log('User found:', user);
+        
         if (!user) {
             const error = new Error("Email ou mot de passe invalide.");
-            error.statusCode = 400; 
+            error.statusCode = 400;
+            throw error;
+        }
+
+        if (!user.motDePasse) {
+            const error = new Error("Mot de passe non défini pour cet utilisateur.");
+            error.statusCode = 500;
+            throw error;
         }
 
         const isMatch = await bcrypt.compare(motDePasse, user.motDePasse);
@@ -85,13 +93,15 @@ class AuthService {
         }
 
 
-    await redisClient.del(key);
+        await redisClient.del(key);
 
-        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1d" });
+        const accessToken = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "15m" });
+        const refreshToken = jwt.sign({ id: user._id }, process.env.JWT_REFRESH_SECRET, { expiresIn: "7d" });
         
+        await redisClient.set(`refresh:${user._id}`, refreshToken, { EX: 7 * 24 * 60 * 60 });
 
         user.motDePasse = undefined;
-        return { user, token };
+        return { user, accessToken, refreshToken };
     }
 
     async getConfirmationEmail({ email }) {

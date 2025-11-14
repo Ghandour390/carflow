@@ -1,9 +1,45 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const cachedUser = require('../utils/userCache');
 
 class UserService {
     async getUser(userId) {
-        const user = await User.findById(userId).select('-motDePasse');
+        const user = await User.findById(userId)
+            .select('-motDePasse')
+            .populate({
+                path: 'dossiersMedicinaux',
+                populate: [
+                    {
+                        path: 'consultations',
+                        model: 'Consultation',
+                        populate: {
+                            path: 'ordonnance',
+                            model: 'Ordonnance',
+                            populate: {
+                                path: 'medicaments',
+                                model: 'Medicament'
+                            }
+                        }
+                    },
+                    {
+                        path: 'analyses',
+                        model: 'Analyse'
+                    },
+                    {
+                        path: 'vaccinations',
+                        model: 'Vaccination'
+                    },
+                    {
+                        path: 'antecedents',
+                        model: 'Antecedent'
+                    },
+                    {
+                        path: 'documents',
+                        model: 'Document'
+                    }
+                ]
+            });
+
         if (!user) {
             const error = new Error("Utilisateur non trouvé.");
             error.statusCode = 404;
@@ -34,7 +70,6 @@ class UserService {
         });
 
         await newUser.save();
-        // Ne pas retourner le mot de passe
         newUser.motDePasse = undefined;
         return newUser;
     }
@@ -47,7 +82,7 @@ class UserService {
             throw error;
         }
 
-        // Si un nouveau mot de passe est fourni, le hacher
+   
         if (updateData.motDePasse) {
             const salt = await bcrypt.genSalt(10);
             updateData.motDePasse = await bcrypt.hash(updateData.motDePasse, salt);
@@ -56,6 +91,7 @@ class UserService {
         Object.assign(user, updateData);
         await user.save();
         user.motDePasse = undefined;
+        await cachedUser(user.id,user);
         return user;
     }
 
@@ -82,25 +118,21 @@ class UserService {
     }
 
     async getMedecinsBySpecialite(specialiteId) {
-        try {
-            const medecins = await User.find({
-                role: 'medecin',
-                specialiteId: specialiteId,
-                estActif: true,
-                isConfirmed: true
-            }).select('-motDePasse')
-              .populate('specialiteId');
+        const medecins = await User.find({
+            role: 'medecin',
+            specialiteId: specialiteId,
+            estActif: true,
+            isConfirmed: true
+        }).select('-motDePasse')
+          .populate('specialiteId');
 
-            if (!medecins.length) {
-                const error = new Error("Aucun médecin trouvé pour cette spécialité.");
-                error.statusCode = 404;
-                throw error;
-            }
-
-            return medecins;
-        } catch (error) {
+        if (!medecins.length) {
+            const error = new Error("Aucun médecin trouvé pour cette spécialité.");
+            error.statusCode = 404;
             throw error;
         }
+
+        return medecins;
     }
 }
 

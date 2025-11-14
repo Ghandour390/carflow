@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors'); 
 require('dotenv').config();
 const connectToMongoDB = require('./config/db');
 const redisClient = require('./config/redis');
@@ -21,6 +22,11 @@ const app = express();
 const port = process.env.PORT || 3000; // Utilise la variable d'environnement PORT, ou 3000 par défaut
 
 // Middleware
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -56,7 +62,6 @@ const startServer = async () => {
 
     // app.use('/api/specialites', specialiteRoute);
     app.use('/api/documents', documentRoute);
-
   
     app.listen(port, () => {
       console.log(`Server is running on port ${port} http://localhost:${port}`);

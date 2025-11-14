@@ -9,6 +9,7 @@ const isEmailConfirmed = require('../medlwers/isEmailConfirmed');
     // Routes publiques
     router.post('/register', AuthController.register);
     router.post('/login', AuthController.login);
+    router.post('/logout', verifyToken, AuthController.logout);
     
     // Routes pour la confirmation d'email
     router.get('/confirmation-email/:email', AuthController.getConfirmationEmail);

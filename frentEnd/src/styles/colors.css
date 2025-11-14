@@ -1,0 +1,61 @@
+:root {
+  /* Sky Blue */
+  --sky-blue: #8ecae6;
+  --sky-blue-100: #0d2e3d;
+  --sky-blue-200: #1b5c7a;
+  --sky-blue-300: #288ab7;
+  --sky-blue-400: #51aed9;
+  --sky-blue-500: #8ecae6;
+  --sky-blue-600: #a5d5eb;
+  --sky-blue-700: #bbdff0;
+  --sky-blue-800: #d2eaf5;
+  --sky-blue-900: #e8f4fa;
+
+  /* Blue Green */
+  --blue-green: #219ebc;
+  --blue-green-100: #071f25;
+  --blue-green-200: #0d3e4b;
+  --blue-green-300: #145d70;
+  --blue-green-400: #1a7d95;
+  --blue-green-500: #219ebc;
+  --blue-green-600: #39bcdc;
+  --blue-green-700: #6bcce5;
+  --blue-green-800: #9cddee;
+  --blue-green-900: #ceeef6;
+
+  /* Prussian Blue */
+  --prussian-blue: #023047;
+  --prussian-blue-100: #00090e;
+  --prussian-blue-200: #01131c;
+  --prussian-blue-300: #011c2a;
+  --prussian-blue-400: #012638;
+  --prussian-blue-500: #023047;
+  --prussian-blue-600: #04699b;
+  --prussian-blue-700: #06a3f1;
+  --prussian-blue-800: #54c3fb;
+  --prussian-blue-900: #a9e1fd;
+
+  /* Selective Yellow */
+  --selective-yellow: #ffb703;
+  --selective-yellow-100: #342500;
+  --selective-yellow-200: #684b00;
+  --selective-yellow-300: #9c7000;
+  --selective-yellow-400: #d09500;
+  --selective-yellow-500: #ffb703;
+  --selective-yellow-600: #ffc637;
+  --selective-yellow-700: #ffd569;
+  --selective-yellow-800: #ffe39b;
+  --selective-yellow-900: #fff1cd;
+
+  /* UT Orange */
+  --ut-orange: #fb8500;
+  --ut-orange-100: #321b00;
+  --ut-orange-200: #643500;
+  --ut-orange-300: #965000;
+  --ut-orange-400: #c86b00;
+  --ut-orange-500: #fb8500;
+  --ut-orange-600: #ff9e2f;
+  --ut-orange-700: #ffb663;
+  --ut-orange-800: #ffce97;
+  --ut-orange-900: #ffe7cb;
+}

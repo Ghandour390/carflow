@@ -128,7 +128,7 @@ class RendezVousService {
         const rendezVousSaved = await disponibilite.save();
 
         // Envoyer une notification au médecin
-        await NotificationService.sendRendezVousNotification(rendezVousSaved, 'reservation');
+        // await NotificationService.sendRendezVousNotification(rendezVousSaved, 'reservation');
 
         return rendezVousSaved;
     }

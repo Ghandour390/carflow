@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+// const { create } = require("./User");
 
 const documentSchema = new mongoose.Schema({
     typeDocument: {
@@ -12,6 +13,11 @@ const documentSchema = new mongoose.Schema({
     dateAjout: {
         type: Date,
         default: Date.now
+    },
+    createurId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     },
     dossierMedicalId: {
         type: mongoose.Schema.Types.ObjectId,

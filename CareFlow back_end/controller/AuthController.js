@@ -2,6 +2,7 @@ const AuthService = require('../services/AuthService');
 
 class AuthController {
     register = async (req, res) => {
+        console.log(req.body);
         try {
             const redisClient = req.redis;
             const newUser = await AuthService.register({ ...req.body, redisClient });
@@ -37,8 +38,8 @@ class AuthController {
     login = async (req, res) => {
         try {
             const redisClient = req.redis;
-            const { user, token } = await AuthService.login({ ...req.body, redisClient });
-            res.status(200).json({ msg: "Utilisateur connecté avec succès", user, token });
+            const { user, accessToken, refreshToken } = await AuthService.login({ ...req.body, redisClient });
+            res.status(200).json({ msg: "Utilisateur connecté avec succès", user, accessToken, refreshToken });
         } catch (error) {
             console.error(error);
             res.status(error.statusCode || 500).json({ msg: error.message || "Une erreur est survenue" });
